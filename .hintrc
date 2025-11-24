@@ -17,6 +17,7 @@
       {
         "label": "off"
       }
-    ]
+    ],
+    "disown-opener": "off"
   }
 }

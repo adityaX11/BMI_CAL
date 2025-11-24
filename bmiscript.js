@@ -24,15 +24,15 @@ form.addEventListener("submit", function(e){
     const status=document.querySelector("#status");
     if(bmi<=18.6){
         status.innerHTML=`<span>You Are Under Weight.</span>`;
-        status.style.color="yellow";
+        status.style.color="black";
     }
     else if(bmi>18.8 && bmi<=24.90){
         status.innerHTML=`<span>Your Weight is Normal.</span>`;
-        status.style.color="green";
+        status.style.color="black";
     }
     else{
         status.innerHTML=`<span>You Are Over Weight.</span>`;
-        status.style.color="red";
+        status.style.color="black";
 
     }
 });
