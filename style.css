@@ -1,91 +1,132 @@
+/* ===== Global Background ===== */
 body {
   background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmlyZWx5JTIwbW92ZW1lbnR8ZW58MHx8MHx8fDA%3D&w=1000&q=80');
-  background-size: cover;     /* makes it full-screen */
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  width: 100%;
-  height: 100vh;               /* makes it full-height */
+  min-height: 100vh;
+  margin: 0;
+  /* padding: 0; */
+   padding-top: 80px;
+  display: flex;
+  justify-content: center;
 }
 
+/* ===== Container (Responsive) ===== */
 .container {
-  width: 500px;
-  height: 625px;
-  background-color: #727272;
-  /*padding: 25px;
-  */text-align: center;
-  margin: auto;
+  max-width: 500px;
+  width: 90%;
+  background-color: #727272cc;
+  padding: 25px;
+  text-align: center;
+  margin-top: 15px;
   border-radius: 15px;
+  backdrop-filter: blur(6px);
 }
+
+/* ===== Inputs ===== */
 #height,
 #weight {
-  width: 150px;
-  height: 25px;
-  margin-top: 30px;
-}
-
-#weight-guide {
-  margin-left: 75px;
-  margin-top: 25px;
-}
-
-#results {
-  font-size: 30px;
-  margin-left: 90px;
-  margin-top: 20px;
-  color: rgb(0, 0, 0);
-}
-#status {
-  font-size: 20px;
-  margin-left: 90px;
-  margin-top: 15px;
-  color: rgb(0, 0, 0);
-}
-
-button {
-  width: 150px;
+  width: 100%;
   height: 35px;
-  margin-left: 90px;
+  margin-top: 20px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  padding: 5px 10px;
+  font-size: 16px;
+}
+
+/* ===== Result Text ===== */
+#results {
+  font-size: 28px;
+  margin-top: 20px;
+  color: black;
+}
+
+#status {
+  font-size: 18px;
+  margin-top: 15px;
+  color: black;
+}
+
+/* ===== Button ===== */
+button {
+  width: 50%;
+  height: 40px;
   margin-top: 25px;
   background-color: #fff;
-  padding: 1px 30px;
   border-radius: 8px;
   color: #212121;
-  text-decoration: none;
   border: 2px solid #212121;
-
-  font-size: 25px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
+button:hover {
+  background-color: #212121;
+  color: #fff;
+}
+
+/* ===== Weight Guide ===== */
+#weight-guide {
+  margin-top: 25px;
+  text-align: left;
+  padding: 10px 15px;
+}
+
+/* ===== Heading ===== */
 h1 {
-  padding-left: 15px;
-  padding-top: 25px;
-  
+  margin: 15px 0;
 }
 
-
-/* nav work */
+/* ===== Navbar ===== */
 .header {
   background-color: black;
   padding: 15px;
   text-align: center;
+  position: fixed;     /* stays on top while scrolling */
+  width: 100%;         /* full width */
+  top: 0;              /* stick to top */
+  left: 0;
+  z-index: 1000;       /* ensures it stays above everything */
 }
-.home {
+
+
+.home, .profile {
   color: white;
-  margin-right: 20px;
+  margin: 0 12px;
   text-decoration: none;
-  font-size: 20px;
+  font-size: 18px;
   background-color: rgb(54, 54, 53);
-  font-size: large;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 5px;
 }
-.profile {
-  color: white;
-  margin-left: 20px;
-  text-decoration: none;
-  font-size: 20px;
-  background-color: rgb(54, 54, 53);
-  font-size: large;
-  padding: 5px 10px;
-  border-radius: 5px;
+
+/* ===== Mobile Responsive Fix ===== */
+@media (max-width: 600px) {
+  .container {
+    margin-top: 90px;
+    padding: 20px;
+  }
+
+  button {
+    font-size: 20px;
+  }
+
+  #results {
+    font-size: 24px;
+  }
+
+  #status {
+    font-size: 16px;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: fixed;
+  }
 }
