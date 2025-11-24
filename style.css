@@ -1,0 +1,91 @@
+body {
+  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmlyZWx5JTIwbW92ZW1lbnR8ZW58MHx8MHx8fDA%3D&w=1000&q=80');
+  background-size: cover;     /* makes it full-screen */
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;               /* makes it full-height */
+}
+
+.container {
+  width: 500px;
+  height: 625px;
+  background-color: #727272;
+  /*padding: 25px;
+  */text-align: center;
+  margin: auto;
+  border-radius: 15px;
+}
+#height,
+#weight {
+  width: 150px;
+  height: 25px;
+  margin-top: 30px;
+}
+
+#weight-guide {
+  margin-left: 75px;
+  margin-top: 25px;
+}
+
+#results {
+  font-size: 30px;
+  margin-left: 90px;
+  margin-top: 20px;
+  color: rgb(0, 0, 0);
+}
+#status {
+  font-size: 20px;
+  margin-left: 90px;
+  margin-top: 15px;
+  color: rgb(0, 0, 0);
+}
+
+button {
+  width: 150px;
+  height: 35px;
+  margin-left: 90px;
+  margin-top: 25px;
+  background-color: #fff;
+  padding: 1px 30px;
+  border-radius: 8px;
+  color: #212121;
+  text-decoration: none;
+  border: 2px solid #212121;
+
+  font-size: 25px;
+}
+
+h1 {
+  padding-left: 15px;
+  padding-top: 25px;
+  
+}
+
+
+/* nav work */
+.header {
+  background-color: black;
+  padding: 15px;
+  text-align: center;
+}
+.home {
+  color: white;
+  margin-right: 20px;
+  text-decoration: none;
+  font-size: 20px;
+  background-color: rgb(54, 54, 53);
+  font-size: large;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.profile {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  font-size: 20px;
+  background-color: rgb(54, 54, 53);
+  font-size: large;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
