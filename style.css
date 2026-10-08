@@ -1,6 +1,6 @@
 /* ==========================================================================
    FitPulse 3D Modern Gym UI/UX Stylesheet
-   Designed for High Performance, Sleek Dark-Gym Aesthetic & Responsive Layout
+   Full Mobile Responsiveness, Dropdown Drawer, Educational Guide & Three.js Canvas
    ========================================================================== */
 
 :root {
@@ -13,8 +13,8 @@
   --accent-red: #ef4444;
 
   --bg-dark: #0a0e17;
-  --bg-card: rgba(18, 24, 38, 0.78);
-  --bg-card-hover: rgba(26, 35, 54, 0.9);
+  --bg-card: rgba(18, 24, 38, 0.82);
+  --bg-card-hover: rgba(26, 35, 54, 0.95);
   --glass-border: rgba(255, 255, 255, 0.12);
 
   --text-main: #f3f4f6;
@@ -54,7 +54,7 @@ body {
   width: 100vw;
   height: 100vh;
   z-index: 0;
-  pointer-events: auto; /* allows orbit controls drag */
+  pointer-events: auto;
 }
 
 /* ================= Header & Nav ================= */
@@ -64,11 +64,11 @@ body {
   left: 0;
   width: 100%;
   z-index: 100;
-  background: rgba(10, 14, 23, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(10, 14, 23, 0.9);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--glass-border);
-  padding: 12px 24px;
+  padding: 14px 24px;
 }
 
 .nav-container {
@@ -77,6 +77,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 .brand {
@@ -101,10 +102,11 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+/* Navigation Actions */
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
 }
 
 .nav-link {
@@ -113,31 +115,65 @@ body {
   font-size: 0.95rem;
   font-weight: 500;
   transition: var(--transition-fast);
+  cursor: pointer;
 }
 
 .nav-link:hover {
   color: var(--primary);
 }
 
-.profile-btn {
+.guide-modal-trigger-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--glass-border);
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid var(--primary);
   color: #fff;
-  text-decoration: none;
   font-size: 0.9rem;
-  font-weight: 600;
-  padding: 7px 15px;
+  font-weight: 700;
+  font-family: inherit;
+  padding: 8px 16px;
   border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.guide-modal-trigger-btn:hover {
+  background: var(--primary);
+  color: #050b14;
+}
+
+/* Mobile Hamburger Toggle */
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 32px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 105;
+}
+
+.mobile-menu-btn .bar {
+  width: 100%;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 4px;
   transition: var(--transition-fast);
 }
 
-.profile-btn:hover {
-  background: rgba(0, 242, 254, 0.15);
-  border-color: var(--primary);
-  box-shadow: 0 0 15px var(--primary-glow);
+.mobile-menu-btn.open .bar:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+.mobile-menu-btn.open .bar:nth-child(2) {
+  opacity: 0;
+}
+.mobile-menu-btn.open .bar:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
 }
 
 /* ================= Main Layout ================= */
@@ -164,6 +200,13 @@ body {
   padding: 10px 18px;
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
+}
+
+.banner-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .badge {
@@ -479,55 +522,80 @@ body {
   transition: left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ================= Guide Box ================= */
+/* ================= Guide Box (Inline) ================= */
 .guide-box {
   margin-top: 30px;
   background: rgba(12, 17, 28, 0.5);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 18px 22px;
+  padding: 22px 24px;
 }
 
 .guide-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
 .guide-header h3 {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  color: #e5e7eb;
+  color: #f3f4f6;
 }
 
-.guide-note {
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
+.guide-sub-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.learn-more-btn {
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
   font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.learn-more-btn:hover {
+  background: var(--primary);
+  color: #06111e;
 }
 
 .guide-pills {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
 .pill {
-  padding: 10px;
-  border-radius: var(--radius-sm);
+  padding: 14px 12px;
+  border-radius: var(--radius-md);
   font-size: 0.82rem;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
   text-align: center;
   border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-fast);
 }
 
-.pill span { color: var(--text-muted); }
-.pill strong { font-size: 0.95rem; }
+.pill:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}
+
+.pill span { color: var(--text-muted); font-size: 0.85rem; }
+.pill strong { font-size: 1.05rem; }
+.pill small { color: var(--text-dim); font-size: 0.72rem; }
 
 .pill-under { background: rgba(79, 172, 254, 0.12); border-color: rgba(79, 172, 254, 0.3); color: #7ec7ff; }
 .pill-normal { background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3); color: #34d399; }
@@ -547,6 +615,7 @@ body {
   gap: 12px;
   overflow-x: auto;
   padding-bottom: 5px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .tab-btn {
@@ -913,6 +982,207 @@ body {
   color: #fff;
 }
 
+/* ================= Interactive BMI Educational Modal ================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 7, 13, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-container {
+  max-width: 820px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 35px 30px;
+  border: 1.5px solid var(--primary);
+  box-shadow: 0 0 50px rgba(0, 242, 254, 0.25);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 2rem;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  transition: var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+.modal-header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.modal-main-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 10px 0 6px;
+}
+
+.modal-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.modal-body-content {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.guide-article-block {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  background: rgba(12, 18, 30, 0.6);
+  border: 1px solid var(--glass-border);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+}
+
+.block-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.block-text {
+  flex: 1;
+}
+
+.block-text h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.block-text p {
+  font-size: 0.9rem;
+  color: #d1d5db;
+  line-height: 1.6;
+}
+
+.formula-box {
+  background: rgba(8, 12, 22, 0.9);
+  border: 1px dashed var(--primary);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-top: 10px;
+}
+
+.formula-math {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.formula-sub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.category-breakdown-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.cat-card {
+  padding: 15px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cat-card h4 {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.cat-card p {
+  font-size: 0.82rem;
+  color: #e5e7eb;
+}
+
+.cat-under { background: rgba(79, 172, 254, 0.1); border: 1px solid rgba(79, 172, 254, 0.35); }
+.cat-under h4 { color: #7ec7ff; }
+
+.cat-normal { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); }
+.cat-normal h4 { color: #34d399; }
+
+.cat-over { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.35); }
+.cat-over h4 { color: #fbbf24; }
+
+.cat-obese { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.35); }
+.cat-obese h4 { color: #f87171; }
+
+.limitations-list {
+  list-style: none;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.limitations-list li {
+  font-size: 0.86rem;
+  color: #d1d5db;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.limitations-list li::before {
+  content: "•";
+  position: absolute;
+  left: 4px;
+  color: var(--accent-yellow);
+  font-weight: bold;
+}
+
+.modal-footer {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-done-btn {
+  font-size: 0.95rem;
+  padding: 12px 28px;
+}
+
 /* ================= Footer ================= */
 .footer {
   position: relative;
@@ -942,7 +1212,59 @@ body {
 }
 
 /* ================= Responsive Breakpoints ================= */
+@media (max-width: 860px) {
+  .category-breakdown-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
+  /* Mobile Header Dropdown Drawer */
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .nav-actions {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 250px;
+    background: rgba(12, 17, 28, 0.98);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+    gap: 15px;
+    display: none;
+    transform-origin: top right;
+  }
+
+  .nav-actions.open {
+    display: flex;
+    animation: fadeIn 0.25s ease-out;
+  }
+
+  .nav-actions .nav-link {
+    font-size: 1.05rem;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+  }
+
+  .nav-actions .nav-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .guide-modal-trigger-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  /* Main Form & Cards */
   .inputs-grid {
     grid-template-columns: 1fr;
   }
@@ -976,5 +1298,38 @@ body {
 
   .bmi-metrics-summary {
     width: 100%;
+  }
+
+  .guide-article-block {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-container {
+    padding: 24px 18px;
+  }
+
+  .modal-main-title {
+    font-size: 1.45rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .guide-pills {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-text {
+    font-size: 1.15rem;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+  }
+
+  .glow-button {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
   }
 }

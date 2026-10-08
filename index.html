@@ -18,32 +18,41 @@
     <!-- Background 3D Gym Canvas -->
     <canvas id="gym-canvas"></canvas>
 
-    <!-- Top Navigation Header -->
+    <!-- Top Navigation Header with Mobile Responsive Hamburger / Dropdown -->
     <header class="header">
       <div class="nav-container">
         <a class="brand" href="/">
           <span class="brand-icon">⚡</span>
           <span class="brand-text">Fit<span class="highlight">Pulse</span> 3D</span>
         </a>
-        <div class="nav-actions">
+
+        <!-- Mobile Hamburger Button -->
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <!-- Navigation Links (Standard on desktop, Dropdown drawer on mobile) -->
+        <nav class="nav-actions" id="nav-actions">
           <a class="nav-link" href="#calculator-section">Calculator</a>
-          <a class="nav-link" href="#guide-section">BMI Guide</a>
-          <a class="profile-btn" target="_blank" rel="noopener noreferrer" href="https://github.com/adityaX11">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-            </svg>
-            GitHub Profile
-          </a>
-        </div>
+          <a class="nav-link" href="#bmi-guide-modal-btn" id="open-guide-link">What is BMI?</a>
+          <a class="nav-link" href="#guide-section">Categories</a>
+          <button type="button" class="guide-modal-trigger-btn" id="guide-modal-btn">
+            📖 Complete BMI Guide
+          </button>
+        </nav>
       </div>
     </header>
 
     <!-- Main Container -->
     <main class="main-wrapper">
-      <!-- Hero / Interactive 3D Status Overlay -->
+      <!-- 3D Equipment Controls & Canvas Hint -->
       <section class="canvas-hint-banner">
-        <span class="badge">Interactive 3D Gym</span>
-        <span class="hint-text">🖱️ Drag to rotate gym equipment • Scroll to zoom • Interactive lighting</span>
+        <div class="banner-left">
+          <span class="badge">Interactive 3D Gym</span>
+          <span class="hint-text">🖱️ Drag to rotate gym gear • Scroll to zoom</span>
+        </div>
         <div class="model-switchers">
           <button type="button" class="switch-btn active" data-model="dumbbell">Dumbbell</button>
           <button type="button" class="switch-btn" data-model="kettlebell">Kettlebell</button>
@@ -54,9 +63,9 @@
       <!-- Calculator Card -->
       <section class="calculator-card glass-panel" id="calculator-section">
         <div class="card-header">
-          <div class="card-tag">Smart Fitness Tool</div>
-          <h1 class="card-title">Body Mass Index (BMI) & Routine Generator</h1>
-          <p class="card-subtitle">Calculate your exact BMI to unlock evidence-based WHO & CDC diet plans and daily workout recommendations.</p>
+          <div class="card-tag">Clinical Grade Fitness Tool</div>
+          <h1 class="card-title">BMI &amp; Daily Protocol Generator</h1>
+          <p class="card-subtitle">Calculate your precise Body Mass Index and unlock authenticated full-day nutrition and progressive workout routines.</p>
         </div>
 
         <form id="bmi-form">
@@ -86,7 +95,7 @@
             </div>
 
             <div class="input-group">
-              <label for="activity">Activity Level</label>
+              <label for="activity">Daily Activity Level</label>
               <select id="activity" class="custom-select">
                 <option value="sedentary">Sedentary (Little or no exercise)</option>
                 <option value="light" selected>Lightly Active (1-3 days/week)</option>
@@ -98,7 +107,7 @@
 
           <div class="action-row">
             <button type="submit" id="calc-btn" class="glow-button">
-              <span>Calculate BMI & Generate Plan</span>
+              <span>Calculate BMI &amp; Generate Plan</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </div>
@@ -115,12 +124,12 @@
             
             <div class="bmi-metrics-summary">
               <div class="metric-card">
-                <span class="metric-title">Optimal Weight Range</span>
+                <span class="metric-title">Optimal Healthy Weight</span>
                 <span class="metric-value" id="healthy-weight-range">-- kg</span>
                 <span class="metric-sub" id="weight-delta-text">--</span>
               </div>
               <div class="metric-card">
-                <span class="metric-title">Est. Daily Caloric Target</span>
+                <span class="metric-title">Estimated Caloric Intake</span>
                 <span class="metric-value" id="calorie-target">-- kcal</span>
                 <span class="metric-sub" id="caloric-strategy">--</span>
               </div>
@@ -145,33 +154,48 @@
           </div>
         </div>
 
-        <!-- BMI Weight Guide Info Box -->
+        <!-- Inline BMI Weight Quick Reference -->
         <div id="guide-section" class="guide-box">
           <div class="guide-header">
-            <h3>Standard BMI Categories Reference</h3>
-            <span class="guide-note">WHO Guidelines</span>
+            <div>
+              <h3>Standard BMI Classification (WHO Standards)</h3>
+              <p class="guide-sub-desc">Click any category or click the Guide button above to learn in-depth clinical details.</p>
+            </div>
+            <button type="button" class="learn-more-btn" id="inline-guide-btn">In-Depth Guide &rarr;</button>
           </div>
           <div class="guide-pills">
-            <div class="pill pill-under"><span>Underweight</span> <strong>&lt; 18.5</strong></div>
-            <div class="pill pill-normal"><span>Normal Weight</span> <strong>18.5 - 24.9</strong></div>
-            <div class="pill pill-over"><span>Overweight</span> <strong>25.0 - 29.9</strong></div>
-            <div class="pill pill-obese"><span>Obesity</span> <strong>≥ 30.0</strong></div>
+            <div class="pill pill-under" data-category="underweight">
+              <span>Underweight</span> <strong>&lt; 18.5</strong>
+              <small>Caloric surplus &amp; strength focus</small>
+            </div>
+            <div class="pill pill-normal" data-category="normal">
+              <span>Normal Weight</span> <strong>18.5 - 24.9</strong>
+              <small>Lowest statistical disease risk</small>
+            </div>
+            <div class="pill pill-over" data-category="overweight">
+              <span>Overweight</span> <strong>25.0 - 29.9</strong>
+              <small>Gradual fat reduction needed</small>
+            </div>
+            <div class="pill pill-obese" data-category="obese">
+              <span>Obesity</span> <strong>≥ 30.0</strong>
+              <small>Joint protection &amp; structured deficit</small>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Dynamic Full-Day Diet & Workout Sections (Appears after calculation) -->
+      <!-- Dynamic Full-Day Diet & Workout Sections -->
       <section id="plan-section" class="plan-section hidden">
-        <!-- Tab Navigation -->
+        <!-- Tab Navigation (Scrollable / Dropdown friendly) -->
         <div class="tabs-header">
           <button type="button" class="tab-btn active" data-tab="diet-tab">
             <span class="tab-icon">🥗</span> Full-Day Diet Suggestion
           </button>
           <button type="button" class="tab-btn" data-tab="workout-tab">
-            <span class="tab-icon">💪</span> Daily Workout & Push-up Routine
+            <span class="tab-icon">💪</span> Daily Workout &amp; Push-up Routine
           </button>
           <button type="button" class="tab-btn" data-tab="science-tab">
-            <span class="tab-icon">🔬</span> WHO & CDC Scientific Guidelines
+            <span class="tab-icon">🔬</span> WHO &amp; CDC Evidence
           </button>
         </div>
 
@@ -181,7 +205,7 @@
             <div>
               <span class="plan-badge" id="diet-badge">Target Nutrition</span>
               <h2 id="diet-heading">Personalized Full-Day Meal Plan</h2>
-              <p class="plan-sub" id="diet-summary">Curated based on verified WHO & Harvard Health dietary guidelines.</p>
+              <p class="plan-sub" id="diet-summary">Curated based on verified WHO &amp; Harvard Health dietary guidelines.</p>
             </div>
             <div class="macro-chips" id="macro-distribution">
               <span class="chip chip-protein" id="macro-p">Protein: 25%</span>
@@ -195,7 +219,7 @@
           </div>
 
           <div class="nutrition-tips-box" id="diet-hydration-box">
-            <!-- Hydration and key tips -->
+            <!-- Hydration tips -->
           </div>
         </div>
 
@@ -204,17 +228,17 @@
           <div class="section-title-bar">
             <div>
               <span class="plan-badge" id="workout-badge">Training Protocol</span>
-              <h2 id="workout-heading">Daily Workout & Progressive Push-up Routine</h2>
+              <h2 id="workout-heading">Daily Workout &amp; Progressive Push-up Routine</h2>
               <p class="plan-sub">Built around progressive overload, joint longevity, and metabolic optimization.</p>
             </div>
           </div>
 
-          <!-- Highlight Push-up Tracker / Routine Card -->
+          <!-- Highlight Push-up Tracker Card -->
           <div class="pushup-hero-card" id="pushup-hero">
-            <!-- Pushup variation, rep targets, video/form instructions -->
+            <!-- Pushup variation, rep targets, instructions -->
           </div>
 
-          <!-- Full Daily Workout Schedule Grid -->
+          <!-- Full Daily Workout Grid -->
           <h3 class="subheading">Complete Daily Exercise Regimen</h3>
           <div class="exercises-grid" id="exercises-container">
             <!-- Dynamic workout exercises injected here -->
@@ -226,8 +250,8 @@
           <div class="section-title-bar">
             <div>
               <span class="plan-badge">Verified Evidence</span>
-              <h2>Authenticated Health Sources & Medical Guidelines</h2>
-              <p class="plan-sub">Every recommendation aligns strictly with international standards from WHO, CDC, and the American College of Sports Medicine (ACSM).</p>
+              <h2>Authenticated Health Sources &amp; Medical Guidelines</h2>
+              <p class="plan-sub">Every recommendation aligns strictly with international standards from WHO, CDC, and ACSM.</p>
             </div>
           </div>
 
@@ -242,14 +266,14 @@
             <div class="science-card">
               <div class="sc-icon">🏥</div>
               <h4>Centers for Disease Control and Prevention (CDC)</h4>
-              <p>Recommends the "Healthy Plate Method" (1/2 non-starchy vegetables & fruits, 1/4 whole grains, 1/4 lean protein). Safe sustainable weight regulation targets 0.5–1.0 kg (1–2 lbs) per week through gradual caloric adjustments rather than extreme deprivation.</p>
+              <p>Recommends the "Healthy Plate Method" (1/2 non-starchy vegetables &amp; fruits, 1/4 whole grains, 1/4 lean protein). Safe sustainable weight regulation targets 0.5–1.0 kg (1–2 lbs) per week through gradual caloric adjustments rather than extreme deprivation.</p>
               <a href="https://www.cdc.gov/healthy-weight-growth/food-activity/index.html" target="_blank" rel="noopener noreferrer" class="sc-link">CDC Healthy Weight &amp; Food &rarr;</a>
             </div>
 
             <div class="science-card">
               <div class="sc-icon">🏋️</div>
               <h4>American College of Sports Medicine (ACSM)</h4>
-              <p>Formulates standard push-up and calisthenic progressions: Incline/Knee push-ups for beginners (elevating load smoothly from 9% to ~55%), standard floor push-ups lifting ~64% of bodyweight, and decline/plyometric push-ups for progressive hypertrophy.</p>
+              <p>Formulates standard push-up progressions: Incline/Knee push-ups for beginners (elevating load smoothly from ~9% to ~55%), standard floor push-ups lifting ~64% of bodyweight, and decline push-ups for progressive muscle hypertrophy.</p>
               <a href="https://www.acsm.org/" target="_blank" rel="noopener noreferrer" class="sc-link">ACSM Exercise Guidelines &rarr;</a>
             </div>
           </div>
@@ -257,9 +281,101 @@
       </section>
     </main>
 
+    <!-- Interactive Comprehensive BMI Educational Modal -->
+    <div id="bmi-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-container glass-panel">
+        <button type="button" class="modal-close-btn" id="modal-close-btn" aria-label="Close Modal">&times;</button>
+        
+        <div class="modal-header">
+          <span class="badge">Comprehensive Educational Guide</span>
+          <h2 id="modal-title" class="modal-main-title">Understanding Body Mass Index (BMI)</h2>
+          <p class="modal-subtitle">Everything you need to know about what BMI means, how it is calculated, clinical categories, and critical health considerations.</p>
+        </div>
+
+        <div class="modal-body-content">
+          <!-- Section 1: What is BMI -->
+          <div class="guide-article-block">
+            <div class="block-icon">📊</div>
+            <div class="block-text">
+              <h3>1. What is Body Mass Index (BMI)?</h3>
+              <p>Body Mass Index (BMI) is an internationally recognized screening metric established by the <strong>World Health Organization (WHO)</strong> and the <strong>Centers for Disease Control and Prevention (CDC)</strong>. It measures the relationship between a person's weight and height to estimate whether they are in a healthy weight range.</p>
+            </div>
+          </div>
+
+          <!-- Section 2: Mathematical Formula -->
+          <div class="guide-article-block">
+            <div class="block-icon">🧮</div>
+            <div class="block-text">
+              <h3>2. How is BMI Calculated?</h3>
+              <p>BMI is determined using a simple, universal formula:</p>
+              <div class="formula-box">
+                <span class="formula-math">BMI = Weight (kg) &divide; [Height (m)]&sup2;</span>
+                <span class="formula-sub">Example: For an individual weighing 70 kg with a height of 1.75 m (175 cm):<br>
+                BMI = 70 &divide; (1.75 &times; 1.75) = 70 &divide; 3.0625 = <strong>22.86</strong> (Normal Range)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: The 4 Primary Categories & Health Meanings -->
+          <div class="guide-article-block">
+            <div class="block-icon">🩺</div>
+            <div class="block-text">
+              <h3>3. The 4 Clinical Categories &amp; What They Mean</h3>
+              
+              <div class="category-breakdown-cards">
+                <div class="cat-card cat-under">
+                  <h4>Underweight (&lt; 18.5)</h4>
+                  <p><strong>Health Implication:</strong> Being underweight may indicate nutritional deficiencies, compromised immune function, osteoporosis risk, or loss of lean muscle mass.</p>
+                  <p><strong>Recommended Strategy:</strong> Safe caloric surplus (+350 to +500 kcal/day), nutrient-dense foods (nuts, whole grains, lean meats/dairy), and strength-focused exercise.</p>
+                </div>
+
+                <div class="cat-card cat-normal">
+                  <h4>Normal Weight (18.5 &ndash; 24.9)</h4>
+                  <p><strong>Health Implication:</strong> Associated with the lowest statistical risk of cardiovascular disease, type 2 diabetes, and premature mortality.</p>
+                  <p><strong>Recommended Strategy:</strong> Maintenance caloric balance, diverse micronutrient intake (CDC Healthy Plate), and consistent cardio &amp; resistance training.</p>
+                </div>
+
+                <div class="cat-card cat-over">
+                  <h4>Overweight (25.0 &ndash; 29.9)</h4>
+                  <p><strong>Health Implication:</strong> Elevates long-term risk for hypertension, arterial plaque, dyslipidemia, and metabolic strain.</p>
+                  <p><strong>Recommended Strategy:</strong> Moderate sustainable caloric deficit (-400 kcal/day), high fiber intake, and joint-friendly progressive push-ups and walking.</p>
+                </div>
+
+                <div class="cat-card cat-obese">
+                  <h4>Obesity (≥ 30.0)</h4>
+                  <p><strong>Health Implication:</strong> Substantially increases susceptibility to coronary heart disease, sleep apnea, joint osteoarthritis, and metabolic syndrome.</p>
+                  <p><strong>Recommended Strategy:</strong> Eliminating ultra-processed sugars, prioritizing low-sodium anti-inflammatory meals, low-impact exercise, and consulting medical professionals.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: What BMI Does NOT Tell You (Crucial Caveats) -->
+          <div class="guide-article-block">
+            <div class="block-icon">⚠️</div>
+            <div class="block-text">
+              <h3>4. Essential Things to Know: Limitations of BMI</h3>
+              <p>While BMI is an excellent, rapid population-level screening tool, healthcare professionals emphasize that it does have key limitations:</p>
+              <ul class="limitations-list">
+                <li><strong>Does Not Distinguish Muscle from Fat:</strong> Muscle is denser than adipose tissue. Athletes, bodybuilders, and active gym-goers often register as "Overweight" on BMI despite having low body-fat percentages.</li>
+                <li><strong>Fat Distribution Matters:</strong> BMI cannot measure visceral fat (abdominal fat stored around internal organs), which carries higher metabolic risk than subcutaneous fat. Waist circumference is often used alongside BMI.</li>
+                <li><strong>Age and Bone Density:</strong> Older adults naturally lose muscle mass and bone mineral density, meaning a "normal" BMI may mask low muscle reserve (sarcopenia).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="glow-button modal-done-btn" id="modal-close-bottom-btn">
+            Got It &mdash; Back to Calculator
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
-      <p>&copy; FitPulse 3D • Crafted with Three.js • Verified with WHO & CDC Guidelines • Ready for Vercel Deployment</p>
+      <p>&copy; FitPulse 3D &bull; Crafted with Three.js &bull; WHO &amp; CDC Evidence Based &bull; Optimized for All Devices</p>
     </footer>
 
     <!-- App Scripts -->

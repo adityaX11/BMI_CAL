@@ -764,6 +764,79 @@ document.addEventListener("DOMContentLoaded", () => {
     resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
+  // --- Mobile Hamburger Menu Toggle ---
+  const mobileMenuBtn = document.querySelector("#mobile-menu-btn");
+  const navActions = document.querySelector("#nav-actions");
+
+  if (mobileMenuBtn && navActions) {
+    mobileMenuBtn.addEventListener("click", () => {
+      mobileMenuBtn.classList.toggle("open");
+      navActions.classList.toggle("open");
+    });
+
+    // Close mobile dropdown when a nav-link is clicked
+    document.querySelectorAll(".nav-link").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileMenuBtn.classList.remove("open");
+        navActions.classList.remove("open");
+      });
+    });
+  }
+
+  // --- Comprehensive BMI Educational Modal Logic ---
+  const bmiModal = document.querySelector("#bmi-modal");
+  const openModalBtn = document.querySelector("#guide-modal-btn");
+  const openGuideLink = document.querySelector("#open-guide-link");
+  const inlineGuideBtn = document.querySelector("#inline-guide-btn");
+  const closeModalBtn = document.querySelector("#modal-close-btn");
+  const closeBottomBtn = document.querySelector("#modal-close-bottom-btn");
+
+  function openGuideModal() {
+    if (bmiModal) {
+      bmiModal.classList.remove("hidden");
+      document.body.style.overflow = "hidden"; // Prevent background scrolling
+    }
+  }
+
+  function closeGuideModal() {
+    if (bmiModal) {
+      bmiModal.classList.add("hidden");
+      document.body.style.overflow = "auto";
+    }
+  }
+
+  if (openModalBtn) openModalBtn.addEventListener("click", openGuideModal);
+  if (openGuideLink) openGuideLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    openGuideModal();
+  });
+  if (inlineGuideBtn) inlineGuideBtn.addEventListener("click", openGuideModal);
+  if (closeModalBtn) closeModalBtn.addEventListener("click", closeGuideModal);
+  if (closeBottomBtn) closeBottomBtn.addEventListener("click", closeGuideModal);
+
+  // Close modal when clicking outside modal container
+  if (bmiModal) {
+    bmiModal.addEventListener("click", (e) => {
+      if (e.target === bmiModal) {
+        closeGuideModal();
+      }
+    });
+  }
+
+  // Escape key closes modal
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && bmiModal && !bmiModal.classList.contains("hidden")) {
+      closeGuideModal();
+    }
+  });
+
+  // Clicking category pills opens modal directly
+  document.querySelectorAll(".pill").forEach(pill => {
+    pill.addEventListener("click", () => {
+      openGuideModal();
+    });
+  });
+
   // --- Tab Navigation Logic ---
   const tabButtons = document.querySelectorAll(".tab-btn");
   tabButtons.forEach(btn => {
