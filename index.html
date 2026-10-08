@@ -4,30 +4,265 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>FitPulse 3D | Smart BMI, Diet & Workout Suite</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
-    <title>BMI Calculator</title>
+    <!-- Three.js & OrbitControls from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   </head>
-  <body >
-    <nav class="header">
-      <a class="home" href="/" aria-current="page">Home</a>
-      <a class="profile" target="_blank" href="https://github.com/adityaX11">GitHub Profile</a>
-    </nav>
-    <div class="container">
-      <h1>BMI Calculator</h1>
-      <form>
-        <p><label>Height in CM: </label><input type="text" id="height" /></p>
-        <p><label>Weight in KG: </label><input type="text" id="weight" /></p>
-        <button>Calculate</button>
-        <div id="results"></div>
-        <div id="status"></div>
-        <div id="weight-guide">
-          <h3>BMI Weight Guide</h3>
-          <p>Under Weight = Less than 18.6</p>
-          <p>Normal Range = 18.6 and 24.9</p>
-          <p>Overweight = Greater than 24.9</p>
+  <body>
+    <!-- Background 3D Gym Canvas -->
+    <canvas id="gym-canvas"></canvas>
+
+    <!-- Top Navigation Header -->
+    <header class="header">
+      <div class="nav-container">
+        <a class="brand" href="/">
+          <span class="brand-icon">⚡</span>
+          <span class="brand-text">Fit<span class="highlight">Pulse</span> 3D</span>
+        </a>
+        <div class="nav-actions">
+          <a class="nav-link" href="#calculator-section">Calculator</a>
+          <a class="nav-link" href="#guide-section">BMI Guide</a>
+          <a class="profile-btn" target="_blank" rel="noopener noreferrer" href="https://github.com/adityaX11">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            GitHub Profile
+          </a>
         </div>
-      </form>
-    </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-wrapper">
+      <!-- Hero / Interactive 3D Status Overlay -->
+      <section class="canvas-hint-banner">
+        <span class="badge">Interactive 3D Gym</span>
+        <span class="hint-text">🖱️ Drag to rotate gym equipment • Scroll to zoom • Interactive lighting</span>
+        <div class="model-switchers">
+          <button type="button" class="switch-btn active" data-model="dumbbell">Dumbbell</button>
+          <button type="button" class="switch-btn" data-model="kettlebell">Kettlebell</button>
+          <button type="button" class="switch-btn" data-model="barbell">Barbell</button>
+        </div>
+      </section>
+
+      <!-- Calculator Card -->
+      <section class="calculator-card glass-panel" id="calculator-section">
+        <div class="card-header">
+          <div class="card-tag">Smart Fitness Tool</div>
+          <h1 class="card-title">Body Mass Index (BMI) & Routine Generator</h1>
+          <p class="card-subtitle">Calculate your exact BMI to unlock evidence-based WHO & CDC diet plans and daily workout recommendations.</p>
+        </div>
+
+        <form id="bmi-form">
+          <div class="inputs-grid">
+            <div class="input-group">
+              <label for="height">Height</label>
+              <div class="input-with-unit">
+                <input type="number" id="height" step="0.1" placeholder="e.g. 175" required />
+                <span class="unit-tag">cm</span>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="weight">Weight</label>
+              <div class="input-with-unit">
+                <input type="number" id="weight" step="0.1" placeholder="e.g. 70" required />
+                <span class="unit-tag">kg</span>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="gender">Biological Sex</label>
+              <select id="gender" class="custom-select">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="activity">Activity Level</label>
+              <select id="activity" class="custom-select">
+                <option value="sedentary">Sedentary (Little or no exercise)</option>
+                <option value="light" selected>Lightly Active (1-3 days/week)</option>
+                <option value="moderate">Moderately Active (3-5 days/week)</option>
+                <option value="active">Very Active (6-7 days/week)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button type="submit" id="calc-btn" class="glow-button">
+              <span>Calculate BMI & Generate Plan</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </form>
+
+        <!-- BMI Gauge & Results Section (Appears after submission) -->
+        <div id="results-container" class="results-container hidden">
+          <div class="results-overview">
+            <div class="bmi-score-circle">
+              <span class="score-label">Your BMI</span>
+              <span class="score-number" id="bmi-val">--</span>
+              <span class="score-status" id="bmi-category">--</span>
+            </div>
+            
+            <div class="bmi-metrics-summary">
+              <div class="metric-card">
+                <span class="metric-title">Optimal Weight Range</span>
+                <span class="metric-value" id="healthy-weight-range">-- kg</span>
+                <span class="metric-sub" id="weight-delta-text">--</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-title">Est. Daily Caloric Target</span>
+                <span class="metric-value" id="calorie-target">-- kcal</span>
+                <span class="metric-sub" id="caloric-strategy">--</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive BMI Range Bar -->
+          <div class="bmi-range-wrapper">
+            <div class="range-labels">
+              <span>Underweight (&lt; 18.5)</span>
+              <span>Normal (18.5 - 24.9)</span>
+              <span>Overweight (25 - 29.9)</span>
+              <span>Obese (≥ 30)</span>
+            </div>
+            <div class="range-track">
+              <div class="segment seg-under"></div>
+              <div class="segment seg-normal"></div>
+              <div class="segment seg-over"></div>
+              <div class="segment seg-obese"></div>
+              <div class="range-indicator" id="range-indicator"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BMI Weight Guide Info Box -->
+        <div id="guide-section" class="guide-box">
+          <div class="guide-header">
+            <h3>Standard BMI Categories Reference</h3>
+            <span class="guide-note">WHO Guidelines</span>
+          </div>
+          <div class="guide-pills">
+            <div class="pill pill-under"><span>Underweight</span> <strong>&lt; 18.5</strong></div>
+            <div class="pill pill-normal"><span>Normal Weight</span> <strong>18.5 - 24.9</strong></div>
+            <div class="pill pill-over"><span>Overweight</span> <strong>25.0 - 29.9</strong></div>
+            <div class="pill pill-obese"><span>Obesity</span> <strong>≥ 30.0</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dynamic Full-Day Diet & Workout Sections (Appears after calculation) -->
+      <section id="plan-section" class="plan-section hidden">
+        <!-- Tab Navigation -->
+        <div class="tabs-header">
+          <button type="button" class="tab-btn active" data-tab="diet-tab">
+            <span class="tab-icon">🥗</span> Full-Day Diet Suggestion
+          </button>
+          <button type="button" class="tab-btn" data-tab="workout-tab">
+            <span class="tab-icon">💪</span> Daily Workout & Push-up Routine
+          </button>
+          <button type="button" class="tab-btn" data-tab="science-tab">
+            <span class="tab-icon">🔬</span> WHO & CDC Scientific Guidelines
+          </button>
+        </div>
+
+        <!-- Tab 1: Full-Day Diet -->
+        <div id="diet-tab" class="tab-content active glass-panel">
+          <div class="section-title-bar">
+            <div>
+              <span class="plan-badge" id="diet-badge">Target Nutrition</span>
+              <h2 id="diet-heading">Personalized Full-Day Meal Plan</h2>
+              <p class="plan-sub" id="diet-summary">Curated based on verified WHO & Harvard Health dietary guidelines.</p>
+            </div>
+            <div class="macro-chips" id="macro-distribution">
+              <span class="chip chip-protein" id="macro-p">Protein: 25%</span>
+              <span class="chip chip-carbs" id="macro-c">Carbs: 50%</span>
+              <span class="chip chip-fats" id="macro-f">Healthy Fats: 25%</span>
+            </div>
+          </div>
+
+          <div class="meals-grid" id="meals-container">
+            <!-- Dynamic meal cards injected here via JS -->
+          </div>
+
+          <div class="nutrition-tips-box" id="diet-hydration-box">
+            <!-- Hydration and key tips -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Daily Workout & Push-ups -->
+        <div id="workout-tab" class="tab-content glass-panel">
+          <div class="section-title-bar">
+            <div>
+              <span class="plan-badge" id="workout-badge">Training Protocol</span>
+              <h2 id="workout-heading">Daily Workout & Progressive Push-up Routine</h2>
+              <p class="plan-sub">Built around progressive overload, joint longevity, and metabolic optimization.</p>
+            </div>
+          </div>
+
+          <!-- Highlight Push-up Tracker / Routine Card -->
+          <div class="pushup-hero-card" id="pushup-hero">
+            <!-- Pushup variation, rep targets, video/form instructions -->
+          </div>
+
+          <!-- Full Daily Workout Schedule Grid -->
+          <h3 class="subheading">Complete Daily Exercise Regimen</h3>
+          <div class="exercises-grid" id="exercises-container">
+            <!-- Dynamic workout exercises injected here -->
+          </div>
+        </div>
+
+        <!-- Tab 3: Scientific Verification & Guidelines -->
+        <div id="science-tab" class="tab-content glass-panel">
+          <div class="section-title-bar">
+            <div>
+              <span class="plan-badge">Verified Evidence</span>
+              <h2>Authenticated Health Sources & Medical Guidelines</h2>
+              <p class="plan-sub">Every recommendation aligns strictly with international standards from WHO, CDC, and the American College of Sports Medicine (ACSM).</p>
+            </div>
+          </div>
+
+          <div class="science-cards-grid">
+            <div class="science-card">
+              <div class="sc-icon">🏛️</div>
+              <h4>World Health Organization (WHO)</h4>
+              <p>Recommends at least 150–300 minutes of moderate aerobic activity weekly or 75–150 minutes of vigorous training, plus muscle-strengthening activities 2+ days weekly. Dietary guidelines recommend limiting free sugars to &lt;5-10% and sodium to &lt;2g/day (5g salt).</p>
+              <a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" target="_blank" rel="noopener noreferrer" class="sc-link">Read WHO Nutrition Fact Sheet &rarr;</a>
+            </div>
+
+            <div class="science-card">
+              <div class="sc-icon">🏥</div>
+              <h4>Centers for Disease Control and Prevention (CDC)</h4>
+              <p>Recommends the "Healthy Plate Method" (1/2 non-starchy vegetables & fruits, 1/4 whole grains, 1/4 lean protein). Safe sustainable weight regulation targets 0.5–1.0 kg (1–2 lbs) per week through gradual caloric adjustments rather than extreme deprivation.</p>
+              <a href="https://www.cdc.gov/healthy-weight-growth/food-activity/index.html" target="_blank" rel="noopener noreferrer" class="sc-link">CDC Healthy Weight &amp; Food &rarr;</a>
+            </div>
+
+            <div class="science-card">
+              <div class="sc-icon">🏋️</div>
+              <h4>American College of Sports Medicine (ACSM)</h4>
+              <p>Formulates standard push-up and calisthenic progressions: Incline/Knee push-ups for beginners (elevating load smoothly from 9% to ~55%), standard floor push-ups lifting ~64% of bodyweight, and decline/plyometric push-ups for progressive hypertrophy.</p>
+              <a href="https://www.acsm.org/" target="_blank" rel="noopener noreferrer" class="sc-link">ACSM Exercise Guidelines &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; FitPulse 3D • Crafted with Three.js • Verified with WHO & CDC Guidelines • Ready for Vercel Deployment</p>
+    </footer>
+
+    <!-- App Scripts -->
+    <script src="bmiscript.js"></script>
   </body>
-  <script src="bmiscript.js"></script>
 </html>
